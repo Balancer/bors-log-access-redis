@@ -9,7 +9,7 @@
     ],
 
     "require": {
-        "redis/predis": "*"
+        "predis/predis": "*"
     },
 
 	"autoload": {
