@@ -1,0 +1,26 @@
+{
+    "name": "balancer/bors-log-access-redis",
+
+    "authors": [
+        {
+            "name": "Balancer",
+            "email": "balancer@balancer.ru"
+        }
+    ],
+
+    "require": {
+        "redis/predis": "*"
+    },
+
+	"autoload": {
+		"psr-4": {
+			"B2\\Log\\Access\\": "./"
+		}
+	},
+
+	"extra": {
+		"bors-data": {
+			'access_logger': 'B2\\Log\\Access\\Redis'
+		}
+	}
+}
