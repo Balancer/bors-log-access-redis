@@ -20,7 +20,7 @@
 
 	"extra": {
 		"bors-data": {
-			'access_logger': 'B2\\Log\\Access\\Redis'
+			"access_logger": "B2\\Log\\Access\\Redis"
 		}
 	}
 }
