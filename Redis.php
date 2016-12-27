@@ -4,16 +4,32 @@ namespace B2\Log\Access;
 
 class Redis
 {
-	static function check()
+	static function sum_time()
 	{
+		$time_id		= str_replace(",",".",floor(time()/600));
+
 		$is_bot = bors()->client()->is_bot();
+		$is_crawler = bors()->client()->is_crawler();
 
-		$ip = $_SERVER['REMOTE_ADDR'];
-		$sid = $is_bot ? $is_bot : $ip;
+		$ip = @$_SERVER['REMOTE_ADDR'];
+		$uid = $is_bot ? $is_bot : $ip;
 
-		$access_log_mem_name = 'bors:access_log:'.$sid;
+		$uid = preg_replace('/[^\w-]+/', '_', $uid);
 
+		if(!$uid)
+			$uid = 'empty_uid';
 
+		if($cfg_srv = \B2\Cfg::get('redis.servers'))
+			dump($cfg_srv);
+
+		$client = new \Predis\Client($cfg_srv, [
+			'prefix' => 'bors:access_log:',
+		]);
+
+		$sum_time = $client->get($time_id.':sum_time:'.$uid);
+		$sum_time += $client->get(($time_id-1).':sum_time:'.$uid);
+
+		return $sum_time;
 	}
 
 /*
@@ -24,9 +40,11 @@ class Redis
 	4. Slowest pairs class / UID
 */
 
-	static function register($uri, $object, $operation_time)
+	static function register($params)
 	{
-		$time_id		= floor(time()/600);
+		extract($params);
+
+		$time_id		= str_replace(",",".",floor(time()/600));
 
 		$is_bot = bors()->client()->is_bot();
 		$is_crawler = bors()->client()->is_crawler();
@@ -49,7 +67,7 @@ class Redis
 		]);
 //		$t = $client->get($id) + $time;
 //		$client->set($id, $t);
-		$client->incrBy($id, $operation_time);
+		$client->incrByFloat($id, str_replace(',', '.', $operation_time));
 		$client->expire($id, 600);
 
 		$id = $time_id.':access_log';
@@ -59,8 +77,8 @@ class Redis
 			'user_id' => bors()->user_id(),
 			'server_uri' => $uri,
 			'referrer' => @$_SERVER['HTTP_REFERER'],
-			'access_time' => round($GLOBALS['stat']['start_microtime']),
-			'operation_time' =>  str_replace(',', '.', $operation_time),
+			'access_time' => $access_time,
+			'operation_time' => $operation_time,
 			'user_agent' => @$_SERVER['HTTP_USER_AGENT'],
 			'is_bot' => $is_bot ? $is_bot : NULL,
 			'is_crawler' => $is_crawler,
@@ -68,7 +86,7 @@ class Redis
 
 		if(empty($object) || !is_object($object))
 		{
-			$data['object_class_name'] = @$_SERVER['REQUEST_URI'];
+			$data['object_class_name'] = $uri;
 		}
 		else
 		{
