@@ -19,8 +19,6 @@
 	},
 
 	"extra": {
-		"bors-data": {
-			"access_loggers": "B2\\Log\\Access\\Redis"
-		}
+		"bors-data-access-loggers": "B2\\Log\\Access\\Redis"
 	}
 }
