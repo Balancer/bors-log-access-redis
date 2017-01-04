@@ -19,8 +19,7 @@ class Redis
 		if(!$uid)
 			$uid = 'empty_uid';
 
-		if($cfg_srv = \B2\Cfg::get('redis.servers'))
-			dump($cfg_srv);
+		$cfg_srv = \B2\Cfg::get('redis.servers');
 
 		$client = new \Predis\Client($cfg_srv, [
 			'prefix' => 'bors:access_log:',
@@ -59,8 +58,7 @@ class Redis
 
 		$id = $time_id.':sum_time:'.$uid;
 
-		if($cfg_srv = \B2\Cfg::get('redis.servers'))
-			dump($cfg_srv);
+		$cfg_srv = \B2\Cfg::get('redis.servers');
 
 		$client = new \Predis\Client($cfg_srv, [
 			'prefix' => 'bors:access_log:',
