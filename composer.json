@@ -19,6 +19,9 @@
 	},
 
 	"extra": {
+		"bors-data": {
+			"admin-reports-links": { "load-redis/": "bors_admin_reports_load" }
+		},
 		"bors-data-access-loggers": "B2\\Log\\Access\\Redis"
 	}
 }
