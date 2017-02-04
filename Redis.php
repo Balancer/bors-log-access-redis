@@ -71,6 +71,7 @@ class Redis
 		$id = $time_id.':access_log';
 
 		$data = [
+			'uid' => $uid,
 			'user_ip' => @$_SERVER['REMOTE_ADDR'],
 			'user_id' => bors()->user_id(),
 			'server_uri' => $uri,
