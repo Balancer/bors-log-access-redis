@@ -28,6 +28,7 @@ class RedisReport extends \bors_admin_page
 
 		$top_classes = [];
 		$top_users = [];
+		$top_requests = [];
 
 		foreach($log as $x)
 		{
@@ -56,20 +57,40 @@ class RedisReport extends \bors_admin_page
 
 			$top_classes[$x['object_class_name']]['operation_time'] += $x['operation_time'];
 			$top_classes[$x['object_class_name']]['count']++;
+
+			if(@$top_classes[$x['object_class_name']]['uri'] < $x['server_uri'])
+				$top_classes[$x['object_class_name']]['uri'] = $x['server_uri'];
+
+			$top_requests[] = $x;
 		}
 
 		uasort($top_users, function($a, $b) { return $a['operation_time'] > $b['operation_time'] ? -1 : 1;});
-		$top_users = array_slice($top_users, 0, 20);
+		$top_users = array_slice($top_users, 0, 50);
 
 		uasort($top_classes, function($a, $b) { return $a['operation_time'] > $b['operation_time'] ? -1 : 1;});
-		$top_classes = array_slice($top_classes, 0, 20);
+		$top_classes = array_slice($top_classes, 0, 50);
 
+		uasort($top_requests, function($a, $b) { return $a['operation_time'] > $b['operation_time'] ? -1 : 1;});
+		$top_requests = array_slice($top_requests, 0, 50);
 
-//		dump($top_classes);
-
+//		dump($top_requests[0]);
+/*
+uid => "185_19_23_191" (13)
+user_ip => "185.19.23.191" (13)
+server_uri => "https://www.aviaport.ru/search/?q=%D0%98%D1%80%D0%B0%D0%BD" (58)
+referrer => "https://www.aviaport.ru/contacts/" (33)
+access_time => 1495889573
+operation_time => 41.771545886993
+user_agent => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.137 YaBrowser/17.4.1.758 Yowser/2.5 Safari/537.36" (142)
+object_class_name => "aviaport_search_result" (22)
+has_bors => 1
+has_bors_url => 1
+object_url => "https://www.aviaport.ru/search/?q=%D0%98%D1%80%D0%B0%D0%BD&s=t" (62)
+*/
 		return array_merge(parent::body_data(), [
 			'top_classes' => $top_classes,
 			'top_users' => $top_users,
+			'top_requests' => $top_requests,
 		]);
 	}
 }
