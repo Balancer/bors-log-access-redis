@@ -72,8 +72,8 @@
 <tr>
 	<td>{$x.access_time|date:"H:i:s"}</td>
 	<td>{$x.object_class_name}</td>
-	<td>{$x.user_ip}</td>
 	<td>{$x.uid}</td>
+	<td>{$x.user_ip}</td>
 	<td>{$x.operation_time|round:3}</td>
 	<td><a href="{$x.server_uri}">{$x.server_uri|wordwrap:80:" ":true}</a></td>
 	<td>{$x.referrer|host_link}</td>
