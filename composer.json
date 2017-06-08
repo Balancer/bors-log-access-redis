@@ -24,7 +24,7 @@
 			"access-loggers": ["B2\\Log\\Access\\Redis"]
 		},
 		"bors-route-static": {
-			"/_bors/admin/reports/load-redis/": "\\B2\\Log\\Access\\RedisReport"
+			"/_bors/admin/reports/load-redis/": "B2\\Log\\Access\\RedisReport"
 		}
 	}
 }
