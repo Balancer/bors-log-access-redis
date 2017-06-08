@@ -20,9 +20,9 @@
 
 	"extra": {
 		"bors-data": {
-			"admin-reports-links": { "/_bors/admin/reports/load-redis/": "Access logs analyze (Redis)" }
+			"admin-reports-links": { "/_bors/admin/reports/load-redis/": "Access logs analyze (Redis)" },
+			"access-loggers": ["B2\\Log\\Access\\Redis"]
 		},
-		"bors-data-access-loggers": "B2\\Log\\Access\\Redis",
 		"bors-route-static": {
 			"/_bors/admin/reports/load-redis/": "\\B2\\Log\\Access\\RedisReport"
 		}
