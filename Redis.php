@@ -101,4 +101,28 @@ class Redis
 		$client->rPush($id, json_encode($data));
 		$client->expire($id, 600);
 	}
+
+	static function all_users()
+	{
+		$time_id		= str_replace(",",".",floor(time()/600));
+
+		$cfg_srv = \B2\Cfg::get('predis.servers');
+
+		$client = new \Predis\Client($cfg_srv, [
+			'prefix' => 'bors:access_log:',
+		]);
+
+		$log = $client->lRange(($time_id-1).':access_log', 0, -1);
+		$log = array_merge($log, $client->lRange($time_id.':access_log', 0, -1));
+
+		$users = [];
+		foreach($log as $x)
+		{
+			$x = json_decode($x);
+			if(!empty($x->user_id))
+				$users[$x->user_id] = $x;
+		}
+
+		return $users;
+	}
 }
