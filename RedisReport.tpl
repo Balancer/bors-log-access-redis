@@ -9,6 +9,8 @@
 	<th>%</th>
 	<th>max uri</th>
 	<th>referrer</th>
+	<th>IP</th>
+	<th>UA</th>
 </tr>
 </thead>
 <tbody>
@@ -21,6 +23,8 @@
 	<td>..</td>
 	<td><a href="{$x.uri}">{$x.uri|wordwrap:80:" ":true}</a></td>
 	<td>{$x.referrer|host_link}</td>
+	<td>{join("<br/>\n",array_keys($x.user_ip))}</td>
+	<td>{$x.user_ua}</td>
 </tr>
 {/foreach}
 </tbody>

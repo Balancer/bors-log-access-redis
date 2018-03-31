@@ -50,6 +50,8 @@ class RedisReport extends \bors_admin_page
 				$top_users[$uid] = ['operation_time' => 0, 'count' => 0];
 
 			$top_users[$uid]['operation_time'] += $x['operation_time'];
+			$top_users[$uid]['user_ip'][$x['user_ip']] = 1;
+			$top_users[$uid]['user_ua'] = @$x['user_agent'];
 			$top_users[$uid]['count']++;
 
 			if(empty($top_classes[$x['object_class_name']]))
