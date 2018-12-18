@@ -75,7 +75,7 @@ class Redis
 			'user_ip' => @$_SERVER['REMOTE_ADDR'],
 			'user_id' => bors()->user_id(),
 			'server_uri' => $uri,
-			'referrer' => @$_SERVER['HTTP_REFERER'],
+			'referer' => @$_SERVER['HTTP_REFERER'],
 			'access_time' => $access_time,
 			'operation_time' => $operation_time,
 			'user_agent' => @$_SERVER['HTTP_USER_AGENT'],
